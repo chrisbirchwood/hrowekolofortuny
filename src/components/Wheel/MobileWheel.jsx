@@ -88,10 +88,14 @@ export default function MobileWheel({ isSpinning, spinPower = 0.5, segments, onS
     if (!isSpinning || spinningRef.current) return;
     spinningRef.current = true;
 
+    // Koncowa pozycja zawsze wyrownana do pelnego paska (snap)
     const totalItems = 30 + Math.floor(spinPower * 40) + Math.floor(Math.random() * 15);
-    const totalDistance = totalItems * ITEM_HEIGHT + Math.random() * ITEM_HEIGHT;
+    const totalDistance = totalItems * ITEM_HEIGHT;
     const duration = 2500 + spinPower * 3000 + Math.random() * 1000;
     const startOffset = offsetRef.current;
+    // Wyrownaj start do pelnego paska zeby snap byl czysty
+    const snapStart = Math.round(startOffset / ITEM_HEIGHT) * ITEM_HEIGHT;
+    const targetOffset = snapStart + totalDistance;
     const startTime = performance.now();
     let lastTickItem = -1;
 
@@ -100,7 +104,7 @@ export default function MobileWheel({ isSpinning, spinPower = 0.5, segments, onS
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3.5);
 
-      offsetRef.current = startOffset + totalDistance * eased;
+      offsetRef.current = snapStart + totalDistance * eased;
 
       // Tykanie
       const currentItem = Math.floor(offsetRef.current / ITEM_HEIGHT);
@@ -114,9 +118,13 @@ export default function MobileWheel({ isSpinning, spinPower = 0.5, segments, onS
       if (progress < 1) {
         rafRef.current = requestAnimationFrame(animate);
       } else {
+        // Wyrownaj do dokladnej pozycji paska
+        offsetRef.current = targetOffset;
+        draw();
+
         spinningRef.current = false;
         const segs = segmentsRef.current;
-        const winningIndex = Math.floor(offsetRef.current / ITEM_HEIGHT) % segs.length;
+        const winningIndex = Math.floor(targetOffset / ITEM_HEIGHT) % segs.length;
 
         if (segs[winningIndex].isWinner) {
           playFanfare();
