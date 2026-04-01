@@ -1,0 +1,69 @@
+.spin-button-wrapper {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.spin-button {
+  padding: 18px 60px;
+  font-size: 28px;
+  font-weight: 900;
+  color: #fff;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 183, 3, 0.5) 0%,
+      rgba(255, 215, 0, 0.7) 100%
+    )
+    left / var(--progress, 0%) 100% no-repeat,
+    linear-gradient(135deg, #e63946 0%, #c1121f 50%, #a4161a 100%);
+  border: 3px solid #ffb703;
+  border-radius: 50px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 6px 20px rgba(230, 57, 70, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.spin-button:hover:not(:disabled):not(.holding) {
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px rgba(230, 57, 70, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.spin-button.holding {
+  transform: scale(0.95);
+  box-shadow: 0 3px 10px rgba(230, 57, 70, 0.4),
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(255, 183, 3, 0.3);
+  border-color: #fff;
+}
+
+.spin-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.spin-hint {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 1px;
+  min-height: 16px;
+}
+
+@media (max-width: 600px) {
+  .spin-button {
+    padding: 14px 40px;
+    font-size: 22px;
+  }
+}

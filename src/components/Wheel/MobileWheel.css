@@ -1,0 +1,113 @@
+.mobile-wheel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.mobile-strip-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.mobile-strip-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: #111;
+}
+
+.mobile-strip-item {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  transition: none;
+}
+
+.mobile-strip-text {
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.2;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/* Strzalki po bokach */
+.mobile-pointer {
+  flex-shrink: 0;
+  z-index: 5;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  margin-right: -4px;
+}
+
+.mobile-pointer--right {
+  margin-right: 0;
+  margin-left: -4px;
+}
+
+/* Linia srodkowa - wyroznienie aktywnego paska */
+.mobile-strip-container::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 66px;
+  transform: translateY(-50%);
+  border: 2px solid #ffb703;
+  border-radius: 8px;
+  z-index: 4;
+  pointer-events: none;
+  box-shadow: 0 0 15px rgba(255, 183, 3, 0.3);
+}
+
+/* Gradient zanikajacy na gorze i dole */
+.mobile-strip-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 10, 21, 0.8) 0%,
+    transparent 25%,
+    transparent 75%,
+    rgba(10, 10, 21, 0.8) 100%
+  );
+  pointer-events: none;
+  z-index: 3;
+  border-radius: 12px;
+}
+
+.mobile-wheel-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.mobile-wheel-title__main {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.mobile-wheel-title__sub {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 11px;
+}

@@ -1,0 +1,123 @@
+.author-panel {
+  padding: 32px 28px;
+  background: linear-gradient(
+    145deg,
+    rgba(30, 30, 58, 0.95),
+    rgba(42, 42, 74, 0.95)
+  );
+  border-radius: 20px;
+  border: 1px solid rgba(255, 183, 3, 0.3);
+  text-align: center;
+  width: 320px;
+  flex-shrink: 0;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(255, 183, 3, 0.05);
+}
+
+.author-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 16px;
+  border: 3px solid #ffb703;
+  box-shadow: 0 4px 15px rgba(255, 183, 3, 0.3);
+}
+
+.author-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 6px;
+}
+
+.author-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.author-role {
+  font-size: 13px;
+  color: #ffb703;
+  font-weight: 600;
+}
+
+.author-desc {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  font-style: italic;
+  margin-top: 4px;
+}
+
+.author-bio {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.5;
+  margin-top: 12px;
+  padding: 0 8px;
+}
+
+.author-divider {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ffb703, transparent);
+  margin: 16px auto;
+}
+
+.author-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.author-links a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  transition: all 0.2s;
+}
+
+.author-links a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transform: translateX(3px);
+}
+
+.author-links a svg {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.link-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.link-label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.link-value {
+  font-size: 13px;
+  word-break: break-all;
+}
+
+@media (max-width: 900px) {
+  .author-panel {
+    width: 90%;
+    max-width: 400px;
+  }
+}

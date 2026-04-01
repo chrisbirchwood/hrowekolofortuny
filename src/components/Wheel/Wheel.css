@@ -1,0 +1,17 @@
+.wheel-container {
+  position: relative;
+  display: inline-block;
+}
+
+.wheel-container canvas {
+  display: block;
+}
+
+.pointer {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}

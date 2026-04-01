@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Kolorowe kolo fortuny jako favikona -->
+  <circle cx="32" cy="32" r="30" fill="#C0C0C0" />
+  <circle cx="32" cy="32" r="28" fill="none" stroke="none" />
+  <!-- Segmenty -->
+  <path d="M32,32 L32,4 A28,28 0 0,1 56.2,18.0 Z" fill="#8B5CF6"/>
+  <path d="M32,32 L56.2,18.0 A28,28 0 0,1 60.0,32.0 Z" fill="#22C55E"/>
+  <path d="M32,32 L60.0,32.0 A28,28 0 0,1 56.2,46.0 Z" fill="#3B82F6"/>
+  <path d="M32,32 L56.2,46.0 A28,28 0 0,1 46.0,56.2 Z" fill="#EAB308"/>
+  <path d="M32,32 L46.0,56.2 A28,28 0 0,1 32.0,60.0 Z" fill="#F97316"/>
+  <path d="M32,32 L32.0,60.0 A28,28 0 0,1 18.0,56.2 Z" fill="#EC4899"/>
+  <path d="M32,32 L18.0,56.2 A28,28 0 0,1 7.8,46.0 Z" fill="#06B6D4"/>
+  <path d="M32,32 L7.8,46.0 A28,28 0 0,1 4.0,32.0 Z" fill="#EF4444"/>
+  <path d="M32,32 L4.0,32.0 A28,28 0 0,1 7.8,18.0 Z" fill="#FFD700"/>
+  <path d="M32,32 L7.8,18.0 A28,28 0 0,1 18.0,7.8 Z" fill="#10B981"/>
+  <path d="M32,32 L18.0,7.8 A28,28 0 0,1 32.0,4.0 Z" fill="#A855F7"/>
+  <!-- Srodkowe kolko -->
+  <circle cx="32" cy="32" r="8" fill="#111" stroke="#FFD700" stroke-width="2"/>
+  <!-- Strzalka na gorze -->
+  <polygon points="32,0 28,8 36,8" fill="#fff" stroke="#ccc" stroke-width="0.5"/>
+  <circle cx="32" cy="4" r="2" fill="#e63946"/>
+</svg>

@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekrutacyjne Koło Fortuny</title>
+    <meta name="description" content="Rekrutacyjne Koło Fortuny - zakręć i odkryj paradoksy rekrutacji z życia wzięte!">
+    <meta property="og:title" content="Rekrutacyjne Koło Fortuny">
+    <meta property="og:description" content="Paradoksy rekrutacyjne z życia wzięte - zakręć i sprawdź swoje szczęście!">
+    <meta property="og:type" content="website">
+    <style>
+        /* ===== Reset i tło ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a15 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        /* ===== Glowny layout - kolo + panel autora obok siebie ===== */
+        .main-layout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .wheel-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ===== Kontener koła ===== */
+        .wheel-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        /* ===== Wskaźnik (trójkąt u góry) ===== */
+        .pointer {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+        }
+
+        /* ===== Przycisk zakręć ===== */
+        .spin-button {
+            margin-top: 30px;
+            padding: 18px 60px;
+            font-size: 28px;
+            font-weight: 900;
+            color: #fff;
+            background: linear-gradient(135deg, #e63946 0%, #c1121f 50%, #a4161a 100%);
+            border: 3px solid #ffb703;
+            border-radius: 50px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 20px rgba(230, 57, 70, 0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+
+        .spin-button:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(230, 57, 70, 0.7), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .spin-button:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .spin-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== Modal z wynikiem ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #1e1e3a, #2a2a4a);
+            border: 3px solid #ffb703;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 550px;
+            width: 90%;
+            text-align: center;
+            animation: scaleIn 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(255, 183, 3, 0.15);
+        }
+
+        .modal-content h2 {
+            color: #ffb703;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .modal-content .result-text {
+            color: #fff;
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            border-left: 4px solid #ffb703;
+        }
+
+        .modal-content .result-text.winner {
+            border-left-color: #4caf50;
+            background: rgba(76, 175, 80, 0.1);
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .modal-close {
+            padding: 14px 40px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #6c63ff 0%, #4834d4 100%);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 1px;
+        }
+
+        .modal-close:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.5);
+        }
+
+        /* ===== Przycisk udostepniania na LinkedIn ===== */
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .linkedin-share {
+            padding: 14px 30px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            background: #0A66C2;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .linkedin-share:hover {
+            transform: scale(1.05);
+            background: #004182;
+            box-shadow: 0 4px 15px rgba(10, 102, 194, 0.5);
+        }
+
+        .linkedin-share svg {
+            width: 20px;
+            height: 20px;
+            fill: #fff;
+        }
+
+        /* ===== Panel autora (po prawej stronie kola) ===== */
+        .author-panel {
+            padding: 32px 28px;
+            background: linear-gradient(145deg, rgba(30, 30, 58, 0.95), rgba(42, 42, 74, 0.95));
+            border-radius: 20px;
+            border: 1px solid rgba(255, 183, 3, 0.3);
+            text-align: center;
+            width: 320px;
+            flex-shrink: 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 183, 3, 0.05);
+        }
+
+        .author-panel .author-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffb703, #fb8500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 36px;
+            font-weight: 900;
+            color: #1a1a2e;
+            box-shadow: 0 4px 15px rgba(255, 183, 3, 0.3);
+        }
+
+        .author-panel .author-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 6px;
+        }
+
+        .author-panel .author-name {
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .author-panel .author-role {
+            font-size: 13px;
+            color: #ffb703;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .author-panel .author-desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .author-panel .author-divider {
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffb703, transparent);
+            margin: 0 auto 20px;
+        }
+
+        .author-panel .author-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .author-panel .author-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.2s;
+        }
+
+        .author-panel .author-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transform: translateX(3px);
+        }
+
+        .author-panel .author-links a svg {
+            flex-shrink: 0;
+            opacity: 0.7;
+        }
+
+        .author-panel .author-links a .link-label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.35);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .author-panel .author-links a .link-value {
+            font-size: 13px;
+            word-break: break-all;
+        }
+
+        .author-panel .author-links .link-text {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        /* ===== Confetti przy ZATRUDNIONY ===== */
+        #confettiCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2000;
+        }
+
+        /* ===== Responsywnosc ===== */
+        @media (max-width: 900px) {
+            .main-layout {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .author-panel {
+                width: 90%;
+                max-width: 400px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .spin-button {
+                padding: 14px 40px;
+                font-size: 22px;
+            }
+
+            .modal-content {
+                padding: 25px;
+            }
+
+            .modal-content .result-text {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-layout">
+        <!-- Lewa strona - kolo -->
+        <div class="wheel-section">
+            <div class="wheel-container">
+                <!-- Wskaznik trójkątny u góry -->
+                <svg class="pointer" width="40" height="50" viewBox="0 0 40 50">
+                    <polygon points="20,45 4,5 36,5" fill="#fff" stroke="#ccc" stroke-width="1.5"/>
+                    <circle cx="20" cy="12" r="5" fill="#e63946"/>
+                </svg>
+                <canvas id="wheelCanvas" role="img" aria-label="Rekrutacyjne Koło Fortuny - interaktywne koło z paradoksami rekrutacyjnymi"></canvas>
+            </div>
+            <button class="spin-button" id="spinButton">ZAKRĘĆ!</button>
+        </div>
+
+        <!-- Prawa strona - panel autora -->
+        <div class="author-panel">
+            <div class="author-avatar">KB</div>
+            <div class="author-label">Autor</div>
+            <div class="author-name">Krzysztof Brzezina</div>
+            <div class="author-role">AI-First Development and QA</div>
+            <div class="author-desc">Paradoksy rekrutacyjne z życia wzięte</div>
+            <div class="author-divider"></div>
+            <div class="author-links">
+                <a href="https://www.linkedin.com/in/krzysztofbrzezina/" target="_blank" rel="noopener noreferrer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    <div class="link-text">
+                        <span class="link-label">LinkedIn</span>
+                        <span class="link-value">krzysztofbrzezina</span>
+                    </div>
+                </a>
+                <a href="mailto:chrisbirchwood.info@gmail.com">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffb703" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <div class="link-text">
+                        <span class="link-label">Email</span>
+                        <span class="link-value">chrisbirchwood.info@gmail.com</span>
+                    </div>
+                </a>
+                <a href="tel:+48500435697">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                    <div class="link-text">
+                        <span class="link-label">Telefon</span>
+                        <span class="link-value">500 435 697</span>
+                    </div>
+                </a>
+                <a href="https://github.com/chrisbirchwood" target="_blank" rel="noopener noreferrer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#aaa"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                    <div class="link-text">
+                        <span class="link-label">GitHub</span>
+                        <span class="link-value">chrisbirchwood</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Canvas na confetti -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <!-- Modal wynikowy -->
+    <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalText">
+        <div class="modal-content">
+            <h2 id="modalTitle">Wynik losowania</h2>
+            <div class="result-text" id="modalText"></div>
+            <div class="modal-actions">
+                <button class="modal-close" id="modalClose">Zamknij</button>
+                <a class="linkedin-share" id="linkedinShare" href="#" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    Udostępnij na LinkedIn
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== Dane segmentów koła (tekst na kole + pelny tekst do modalu) =====
+        const SEGMENTS = [
+            { text: "-OK oddzwonimy do Pana.\n-Ale ja nie mam telefonu", fullText: "-OK oddzwonimy do Pana. -Ale ja nie mam telefonu", color: "#8B5CF6" },
+            { text: "Ghosting - kto dłużej\nbędzie milczał\nw tej relacji?!", fullText: "Ghosting - kto dłużej będzie milczał w tej relacji?!", color: "#22C55E" },
+            { text: "Przepraszam, umówioną\nrozmowę z Hiring Managerem\nmuszę odwołać.\nZapomniał, że właśnie\nzaczyna urlop.", fullText: "Przepraszam, umówioną rozmowę z Hiring Managerem muszę odwołać. Zapomniał, że właśnie zaczyna urlop.", color: "#3B82F6" },
+            { text: "AI odrzuca CV\nw ATS!", fullText: "AI odrzuca CV w ATS!", color: "#EAB308" },
+            { text: "Gratulacje!\nJesteś\nOver Qualified", fullText: "Gratulacje! Jesteś Over Qualified", color: "#F97316" },
+            { text: "Ogłoszenie o pracę,\naktualna rekrutacja.\nNic bardziej mylnego,\nmy tylko zbieramy\nCV na przyszłość", fullText: "Ogłoszenie o pracę, aktualna rekrutacja. Nic bardziej mylnego, my tylko zbieramy CV na przyszłość", color: "#EC4899" },
+            { text: "Odpowiednia nazwa CV\nma znaczenie by rekruter\notworzył nasze resume!", fullText: "Odpowiednia nazwa CV ma znaczenie by rekruter otworzył nasze resume!", color: "#06B6D4" },
+            { text: "Nie zatrudnimy Cię,\nza to damy prezent\nlub zniżkę na nasze\nprodukty/usługę", fullText: "Nie zatrudnimy Cię, za to damy prezent lub zniżkę na nasze produkty/usługę", color: "#EF4444" },
+            { text: "-To dziękuję,\ndo widzenia.\nJa nie płacę\nza naukę.", fullText: "...To dziękuję, do widzenia. Ja nie płacę za naukę.", color: "#A855F7" },
+            { text: "ZATRUDNIONY!", fullText: "ZATRUDNIONY!", color: "#FFD700", isWinner: true },
+            { text: "Dobra wiadomość!\nWracamy do biura.", fullText: "Dobra wiadomość! Wracamy do biura.", color: "#10B981" },
+            { text: "Uważaj i nigdy\nnie proś o wodę\npodczas rozmowy\nrekrutacyjnej", fullText: "Uważaj i nigdy nie proś o wodę podczas rozmowy rekrutacyjnej", color: "#2563EB" },
+            { text: "HURA! Mamy\ndla Ciebie zadanie\nrekrutacyjne", fullText: "HURA! Mamy dla Ciebie zadanie rekrutacyjne", color: "#FACC15" },
+            { text: "Szukamy Juniora\n- minimum 2 lata\ndoświadczenia", fullText: "Szukamy Juniora - minimum 2 lata doświadczenia", color: "#FB923C" },
+            { text: "Gratulujemy! Przeszedłeś\njeden z 120 etapów\nrekrutacji", fullText: "Gratulujemy! Przeszedłeś jeden z 120 etapów rekrutacji", color: "#F472B6" },
+            { text: "Widełki w ogłoszeniu\n15.000 - 45.000 zł\nbrutto", fullText: "Widełki w ogłoszeniu 15.000 - 45.000 zł brutto", color: "#22D3EE" },
+            { text: "Proponujemy B2B\nKontrakt =\nsuccess fee", fullText: "Proponujemy B2B Kontrakt = success fee", color: "#DC2626" },
+            { text: "Praca zdalna to\nu nas podstawa.\n1 dzień w tygodniu\nzawsze Home Office", fullText: "Praca zdalna to u nas podstawa. 1 dzień w tygodniu zawsze Home Office", color: "#7C3AED" }
+        ];
+
+        const SEGMENT_COUNT = SEGMENTS.length;
+        const ARC = (2 * Math.PI) / SEGMENT_COUNT;
+
+        // ===== Elementy DOM =====
+        const canvas = document.getElementById("wheelCanvas");
+        const ctx = canvas.getContext("2d");
+        const spinButton = document.getElementById("spinButton");
+        const modalOverlay = document.getElementById("modalOverlay");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalText = document.getElementById("modalText");
+        const modalClose = document.getElementById("modalClose");
+        const linkedinShare = document.getElementById("linkedinShare");
+
+        // ===== Wymiary canvasa - responsywne =====
+        function calculateSize() {
+            const maxSize = Math.min(window.innerWidth - 40, window.innerHeight - 200, 650);
+            return Math.max(maxSize, 320);
+        }
+
+        let size = calculateSize();
+        let centerX, centerY, radius, innerRadius, outerRingWidth;
+
+        function updateDimensions() {
+            size = calculateSize();
+            canvas.width = size;
+            canvas.height = size;
+            centerX = size / 2;
+            centerY = size / 2;
+            outerRingWidth = size * 0.025;
+            radius = (size / 2) - outerRingWidth - 4;
+            innerRadius = radius * 0.22;
+        }
+
+        updateDimensions();
+
+        // ===== Stan animacji =====
+        let currentAngle = 0;
+        let isSpinning = false;
+
+        // Singleton AudioContext - unikamy tworzenia nowego przy kazdym kreceniu
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === "suspended") {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        // ===== Rysowanie kola =====
+        function drawWheel() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Zewnetrzny metaliczny pierscien
+            drawOuterRing();
+
+            // Segmenty kola
+            for (let i = 0; i < SEGMENT_COUNT; i++) {
+                drawSegment(i);
+            }
+
+            // Centralny czarny krag z napisem
+            drawCenterCircle();
+        }
+
+        // Metaliczny pierscien zewnetrzny
+        function drawOuterRing() {
+            const outerRadius = size / 2 - 2;
+
+            // Pierscien
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, outerRadius, 0, 2 * Math.PI);
+            ctx.arc(centerX, centerY, outerRadius - outerRingWidth, 0, 2 * Math.PI, true);
+            ctx.closePath();
+
+            const ringGradient = ctx.createLinearGradient(0, 0, size, size);
+            ringGradient.addColorStop(0, "#C0C0C0");
+            ringGradient.addColorStop(0.3, "#E8E8E8");
+            ringGradient.addColorStop(0.5, "#A0A0A0");
+            ringGradient.addColorStop(0.7, "#D0D0D0");
+            ringGradient.addColorStop(1, "#909090");
+            ctx.fillStyle = ringGradient;
+            ctx.fill();
+
+            // Sruby/kropki dekoracyjne na pierścieniu
+            const boltRadius = outerRingWidth * 0.25;
+            const boltDistance = outerRadius - outerRingWidth / 2;
+            const boltCount = 36;
+            for (let i = 0; i < boltCount; i++) {
+                const angle = (2 * Math.PI / boltCount) * i;
+                const bx = centerX + Math.cos(angle) * boltDistance;
+                const by = centerY + Math.sin(angle) * boltDistance;
+
+                ctx.beginPath();
+                ctx.arc(bx, by, boltRadius, 0, 2 * Math.PI);
+                const boltGrad = ctx.createRadialGradient(bx - 1, by - 1, 0, bx, by, boltRadius);
+                boltGrad.addColorStop(0, "#fff");
+                boltGrad.addColorStop(1, "#888");
+                ctx.fillStyle = boltGrad;
+                ctx.fill();
+            }
+        }
+
+        // Rysowanie pojedynczego segmentu
+        function drawSegment(index) {
+            const segment = SEGMENTS[index];
+            const startAngle = currentAngle + index * ARC;
+            const endAngle = startAngle + ARC;
+
+            ctx.save();
+
+            // Wypelnienie segmentu
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+            ctx.closePath();
+
+            // Dla segmentu ZATRUDNIONY - specjalny gradient zloty
+            if (segment.isWinner) {
+                const grad = ctx.createRadialGradient(centerX, centerY, innerRadius, centerX, centerY, radius);
+                grad.addColorStop(0, "#FFD700");
+                grad.addColorStop(0.5, "#FFC107");
+                grad.addColorStop(1, "#FF8F00");
+                ctx.fillStyle = grad;
+            } else {
+                ctx.fillStyle = segment.color;
+            }
+            ctx.fill();
+
+            // Obramowanie segmentu
+            ctx.strokeStyle = "rgba(0,0,0,0.3)";
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // Tekst na segmencie
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(startAngle + ARC / 2);
+
+            // Dobieranie koloru tekstu w zaleznosci od jasnosci tla
+            const textColor = getTextColor(segment.color, segment.isWinner);
+            ctx.fillStyle = textColor;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            const lines = segment.text.split("\n");
+            const fontSize = calculateFontSize(lines);
+            ctx.font = `bold ${fontSize}px 'Segoe UI', sans-serif`;
+
+            // Pozycja tekstu - wycentrowane w segmencie
+            const textRadius = innerRadius + (radius - innerRadius) * 0.55;
+            const lineHeight = fontSize * 1.15;
+            const totalHeight = lines.length * lineHeight;
+            const startY = -totalHeight / 2 + lineHeight / 2;
+
+            // Cien tekstu dla czytelnosci
+            ctx.shadowColor = "rgba(0,0,0,0.5)";
+            ctx.shadowBlur = 3;
+            ctx.shadowOffsetX = 1;
+            ctx.shadowOffsetY = 1;
+
+            lines.forEach((line, lineIndex) => {
+                ctx.fillText(line, textRadius, startY + lineIndex * lineHeight, radius * 0.45);
+            });
+
+            ctx.restore();
+            ctx.restore();
+        }
+
+        // Obliczanie rozmiaru czcionki w zaleznosci od ilosci linii
+        function calculateFontSize(lines) {
+            const maxLines = lines.length;
+            const baseSize = size * 0.018;
+            if (maxLines <= 2) return baseSize * 1.1;
+            if (maxLines <= 3) return baseSize * 0.95;
+            if (maxLines <= 4) return baseSize * 0.85;
+            return baseSize * 0.75;
+        }
+
+        // Dobieranie koloru tekstu w zaleznosci od jasnosci tla
+        function getTextColor(hexColor, isWinner) {
+            if (isWinner) return "#000";
+            const r = parseInt(hexColor.slice(1, 3), 16);
+            const g = parseInt(hexColor.slice(3, 5), 16);
+            const b = parseInt(hexColor.slice(5, 7), 16);
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+            return luminance > 0.55 ? "#1a1a2e" : "#ffffff";
+        }
+
+        // Centralny krag
+        function drawCenterCircle() {
+            // Zloty pierscien wokol centrum
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, innerRadius + 4, 0, 2 * Math.PI);
+            const goldGrad = ctx.createLinearGradient(
+                centerX - innerRadius, centerY - innerRadius,
+                centerX + innerRadius, centerY + innerRadius
+            );
+            goldGrad.addColorStop(0, "#FFD700");
+            goldGrad.addColorStop(0.3, "#FFF8DC");
+            goldGrad.addColorStop(0.5, "#DAA520");
+            goldGrad.addColorStop(0.7, "#FFD700");
+            goldGrad.addColorStop(1, "#B8860B");
+            ctx.fillStyle = goldGrad;
+            ctx.fill();
+
+            // Czarne kolo centralne
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, innerRadius, 0, 2 * Math.PI);
+            ctx.fillStyle = "#111";
+            ctx.fill();
+
+            // Tytul
+            ctx.fillStyle = "#fff";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            const titleSize = Math.max(size * 0.028, 11);
+            ctx.font = `900 ${titleSize}px 'Segoe UI', sans-serif`;
+            ctx.fillText("Rekrutacyjne", centerX, centerY - titleSize * 1.1);
+            ctx.fillText("Koło Fortuny", centerX, centerY - titleSize * 0.05);
+
+            // Podtytul
+            const subSize = Math.max(size * 0.014, 7);
+            ctx.font = `${subSize}px 'Segoe UI', sans-serif`;
+            ctx.fillStyle = "rgba(255,255,255,0.7)";
+            wrapText(ctx, "Paradoksy rekrutacyjne z życia wzięte/zasłyszane",
+                centerX, centerY + titleSize * 1.0, innerRadius * 1.6, subSize * 1.2);
+        }
+
+        // Zawijanie tekstu w okraglym centrum
+        function wrapText(context, text, x, y, maxWidth, lineHeight) {
+            const words = text.split(" ");
+            let line = "";
+            let currentY = y;
+
+            words.forEach((word) => {
+                const testLine = line + word + " ";
+                const metrics = context.measureText(testLine);
+                if (metrics.width > maxWidth && line !== "") {
+                    context.fillText(line.trim(), x, currentY);
+                    line = word + " ";
+                    currentY += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            });
+            context.fillText(line.trim(), x, currentY);
+        }
+
+        // ===== Logika obracania kola =====
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            spinButton.disabled = true;
+
+            // Losowy kat obrotu: 5-8 pelnych obrotow + losowy offset
+            const totalRotation = (Math.random() * 3 + 5) * 2 * Math.PI + Math.random() * 2 * Math.PI;
+            const duration = 4000 + Math.random() * 1500; // 4-5.5 sekundy
+            const startAngle = currentAngle;
+            const startTime = performance.now();
+
+            // Tykanie - efekt dzwiekowy
+            let lastTickSegment = -1;
+            const audio = getAudioContext();
+
+            function playTickSound() {
+                try {
+                    const oscillator = audio.createOscillator();
+                    const gainNode = audio.createGain();
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audio.destination);
+                    oscillator.frequency.value = 800 + Math.random() * 400;
+                    oscillator.type = "sine";
+                    gainNode.gain.setValueAtTime(0.08, audio.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + 0.05);
+                    oscillator.start(audio.currentTime);
+                    oscillator.stop(audio.currentTime + 0.05);
+                } catch (e) {}
+            }
+
+            // Standardowy dzwiek zakonczenia
+            function playWinSound() {
+                try {
+                    const notes = [523, 659, 784, 1047];
+                    notes.forEach((freq, i) => {
+                        const osc = audio.createOscillator();
+                        const gain = audio.createGain();
+                        osc.connect(gain);
+                        gain.connect(audio.destination);
+                        osc.frequency.value = freq;
+                        osc.type = "sine";
+                        gain.gain.setValueAtTime(0.12, audio.currentTime + i * 0.15);
+                        gain.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + i * 0.15 + 0.3);
+                        osc.start(audio.currentTime + i * 0.15);
+                        osc.stop(audio.currentTime + i * 0.15 + 0.3);
+                    });
+                } catch (e) {}
+            }
+
+            // Epickie fanfary przy ZATRUDNIONY!
+            function playFanfare() {
+                try {
+                    const fanfare = [
+                        { freq: 523, time: 0, dur: 0.15, type: "square", vol: 0.15 },
+                        { freq: 523, time: 0.15, dur: 0.15, type: "square", vol: 0.15 },
+                        { freq: 523, time: 0.3, dur: 0.15, type: "square", vol: 0.15 },
+                        { freq: 659, time: 0.45, dur: 0.3, type: "square", vol: 0.18 },
+                        { freq: 523, time: 0.8, dur: 0.15, type: "square", vol: 0.15 },
+                        { freq: 659, time: 1.0, dur: 0.15, type: "square", vol: 0.15 },
+                        { freq: 784, time: 1.2, dur: 0.6, type: "square", vol: 0.2 },
+                        { freq: 262, time: 0, dur: 1.8, type: "sine", vol: 0.08 },
+                        { freq: 330, time: 0.45, dur: 1.35, type: "sine", vol: 0.06 },
+                        { freq: 392, time: 1.2, dur: 0.6, type: "sine", vol: 0.07 },
+                        { freq: 784, time: 2.0, dur: 0.12, type: "square", vol: 0.15 },
+                        { freq: 784, time: 2.15, dur: 0.12, type: "square", vol: 0.15 },
+                        { freq: 784, time: 2.3, dur: 0.12, type: "square", vol: 0.15 },
+                        { freq: 1047, time: 2.5, dur: 0.8, type: "square", vol: 0.2 },
+                        { freq: 880, time: 2.5, dur: 0.8, type: "sine", vol: 0.08 },
+                        { freq: 659, time: 2.5, dur: 0.8, type: "sine", vol: 0.06 },
+                    ];
+
+                    fanfare.forEach(note => {
+                        const osc = audio.createOscillator();
+                        const gain = audio.createGain();
+                        osc.connect(gain);
+                        gain.connect(audio.destination);
+                        osc.frequency.value = note.freq;
+                        osc.type = note.type;
+                        const t = audio.currentTime + note.time;
+                        gain.gain.setValueAtTime(0, t);
+                        gain.gain.linearRampToValueAtTime(note.vol, t + 0.02);
+                        gain.gain.setValueAtTime(note.vol, t + note.dur * 0.7);
+                        gain.gain.exponentialRampToValueAtTime(0.001, t + note.dur);
+                        osc.start(t);
+                        osc.stop(t + note.dur);
+                    });
+                } catch (e) {}
+            }
+
+            function animate(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                // Funkcja easingu - realistyczne zwalnianie
+                // cubic-out z dodatkowym spowolnieniem pod koniec
+                const eased = 1 - Math.pow(1 - progress, 3.5);
+
+                currentAngle = startAngle + totalRotation * eased;
+
+                // Efekt tykania - sprawdzamy czy wskaznik przeszedl na nowy segment
+                const normalizedAngle = ((2 * Math.PI - (currentAngle % (2 * Math.PI))) + (2 * Math.PI)) % (2 * Math.PI);
+                const currentTickSegment = Math.floor(normalizedAngle / ARC);
+                if (currentTickSegment !== lastTickSegment) {
+                    lastTickSegment = currentTickSegment;
+                    if (progress < 0.95) { // Tykanie cichnie pod koniec
+                        playTickSound();
+                    }
+                }
+
+                drawWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // Koniec obrotu - ustalenie wyniku
+                    isSpinning = false;
+                    spinButton.disabled = false;
+
+                    // Wskaznik jest na gorze (kat -PI/2 czyli 3PI/2)
+                    // Normalizujemy kat i obliczamy ktory segment jest pod wskaznikiem
+                    const finalAngle = currentAngle % (2 * Math.PI);
+                    // Wskaznik jest u gory, czyli kat 3*PI/2 (lub -PI/2)
+                    const pointerAngle = (3 * Math.PI / 2 - finalAngle + 4 * Math.PI) % (2 * Math.PI);
+                    const winningIndex = Math.floor(pointerAngle / ARC) % SEGMENT_COUNT;
+
+                    const isWinnerSegment = SEGMENTS[winningIndex].isWinner;
+                    if (isWinnerSegment) {
+                        playFanfare();
+                        launchConfetti();
+                    } else {
+                        playWinSound();
+                    }
+                    showResult(winningIndex);
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // Wyswietlanie wyniku w modalu
+        function showResult(index) {
+            const segment = SEGMENTS[index];
+            const fullText = segment.fullText;
+
+            if (segment.isWinner) {
+                modalTitle.textContent = "BRAWO!";
+                modalText.textContent = fullText;
+                modalText.className = "result-text winner";
+            } else {
+                modalTitle.textContent = "Wynik losowania";
+                modalText.textContent = fullText;
+                modalText.className = "result-text";
+            }
+
+            // Przygotowanie linku do udostepnienia na LinkedIn
+            const shareText = `🎡 Zakręciłem Rekrutacyjnym Kołem Fortuny i wylosowałem:\n\n"${fullText}"\n\nParadoksy rekrutacyjne z życia wzięte - sprawdź swoje szczęście! 😄\n\n#HR #Rekrutacja #KołoFortuny #HRHumor`;
+            const linkedinUrl = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(shareText)}`;
+            linkedinShare.href = linkedinUrl;
+
+            // Lekkie opoznienie zeby kolo zdazylo sie zatrzymac wizualnie
+            setTimeout(() => {
+                modalOverlay.classList.add("active");
+                modalClose.focus();
+            }, 400);
+        }
+
+        // Zamykanie modalu
+        function closeModal() {
+            modalOverlay.classList.remove("active");
+            spinButton.focus();
+        }
+
+        // ===== Obsluga zdarzen =====
+        spinButton.addEventListener("click", spinWheel);
+        modalClose.addEventListener("click", closeModal);
+        modalOverlay.addEventListener("click", (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        // Zamykanie modalu klawiszem Escape
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") closeModal();
+        });
+
+        // Responsywnosc - debounced przerysowanie przy zmianie rozmiaru okna
+        let resizeTimeout;
+        window.addEventListener("resize", () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                updateDimensions();
+                drawWheel();
+                resizeConfettiCanvas();
+            }, 100);
+        });
+
+        // ===== Confetti - animacja przy ZATRUDNIONY =====
+        const confettiCanvas = document.getElementById("confettiCanvas");
+        const confettiCtx = confettiCanvas.getContext("2d");
+        let confettiParticles = [];
+        let confettiAnimationId = null;
+
+        function resizeConfettiCanvas() {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+        }
+
+        function launchConfetti() {
+            confettiParticles = [];
+            const colors = ["#FFD700", "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4",
+                            "#FFEAA7", "#DDA0DD", "#98D8C8", "#F7DC6F", "#BB8FCE",
+                            "#F39C12", "#E74C3C", "#2ECC71", "#3498DB", "#FF69B4"];
+
+            // Trzy fale confetti - lewa, srodkowa, prawa strona
+            for (let wave = 0; wave < 3; wave++) {
+                setTimeout(() => {
+                    for (let i = 0; i < 80; i++) {
+                        confettiParticles.push({
+                            x: Math.random() * confettiCanvas.width,
+                            y: -10 - Math.random() * 200,
+                            w: 4 + Math.random() * 8,
+                            h: 6 + Math.random() * 10,
+                            color: colors[Math.floor(Math.random() * colors.length)],
+                            vx: (Math.random() - 0.5) * 6,
+                            vy: 2 + Math.random() * 4,
+                            rotation: Math.random() * 360,
+                            rotationSpeed: (Math.random() - 0.5) * 12,
+                            wobble: Math.random() * Math.PI * 2,
+                            wobbleSpeed: 0.03 + Math.random() * 0.05,
+                            opacity: 1,
+                            shape: Math.random() > 0.5 ? "rect" : "circle"
+                        });
+                    }
+                }, wave * 400);
+            }
+
+            if (!confettiAnimationId) {
+                animateConfetti();
+            }
+        }
+
+        function animateConfetti() {
+            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+
+            confettiParticles.forEach(p => {
+                p.x += p.vx + Math.sin(p.wobble) * 1.5;
+                p.y += p.vy;
+                p.rotation += p.rotationSpeed;
+                p.wobble += p.wobbleSpeed;
+                p.vy += 0.04; // Grawitacja
+                p.vx *= 0.99; // Opor powietrza
+
+                // Zanikanie pod koniec ekranu
+                if (p.y > confettiCanvas.height * 0.75) {
+                    p.opacity -= 0.02;
+                }
+
+                if (p.opacity <= 0) return;
+
+                confettiCtx.save();
+                confettiCtx.translate(p.x, p.y);
+                confettiCtx.rotate((p.rotation * Math.PI) / 180);
+                confettiCtx.globalAlpha = p.opacity;
+                confettiCtx.fillStyle = p.color;
+
+                if (p.shape === "rect") {
+                    confettiCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                } else {
+                    confettiCtx.beginPath();
+                    confettiCtx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
+                    confettiCtx.fill();
+                }
+                confettiCtx.restore();
+            });
+
+            // Usuwanie martwych czasteczek
+            confettiParticles = confettiParticles.filter(p => p.opacity > 0 && p.y < confettiCanvas.height + 50);
+
+            if (confettiParticles.length > 0) {
+                confettiAnimationId = requestAnimationFrame(animateConfetti);
+            } else {
+                confettiAnimationId = null;
+                confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            }
+        }
+
+        // ===== Pierwsze rysowanie kola =====
+        drawWheel();
+    </script>
+</body>
+</html>
