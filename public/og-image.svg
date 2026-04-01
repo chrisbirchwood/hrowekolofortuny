@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Tlo gradientowe -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a15"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Tlo -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <ellipse cx="400" cy="315" rx="350" ry="350" fill="url(#glow)"/>
+
+  <!-- Kolo fortuny - uproszczone -->
+  <g transform="translate(350, 315)">
+    <!-- Zewnetrzny pier scien -->
+    <circle cx="0" cy="0" r="220" fill="#C0C0C0" opacity="0.3"/>
+    <circle cx="0" cy="0" r="210" fill="none" stroke="#FFD700" stroke-width="3" opacity="0.5"/>
+
+    <!-- Segmenty kola -->
+    <path d="M0,0 L0,-200 A200,200 0 0,1 117.6,-161.8 Z" fill="#8B5CF6" opacity="0.9"/>
+    <path d="M0,0 L117.6,-161.8 A200,200 0 0,1 195.6,-65.0 Z" fill="#22C55E" opacity="0.9"/>
+    <path d="M0,0 L195.6,-65.0 A200,200 0 0,1 195.6,65.0 Z" fill="#3B82F6" opacity="0.9"/>
+    <path d="M0,0 L195.6,65.0 A200,200 0 0,1 117.6,161.8 Z" fill="#EAB308" opacity="0.9"/>
+    <path d="M0,0 L117.6,161.8 A200,200 0 0,1 0,200.0 Z" fill="#F97316" opacity="0.9"/>
+    <path d="M0,0 L0,200.0 A200,200 0 0,1 -117.6,161.8 Z" fill="#EC4899" opacity="0.9"/>
+    <path d="M0,0 L-117.6,161.8 A200,200 0 0,1 -195.6,65.0 Z" fill="#06B6D4" opacity="0.9"/>
+    <path d="M0,0 L-195.6,65.0 A200,200 0 0,1 -195.6,-65.0 Z" fill="#EF4444" opacity="0.9"/>
+    <path d="M0,0 L-195.6,-65.0 A200,200 0 0,1 -117.6,-161.8 Z" fill="#FFD700" opacity="0.9"/>
+    <path d="M0,0 L-117.6,-161.8 A200,200 0 0,1 0,-200.0 Z" fill="#10B981" opacity="0.9"/>
+
+    <!-- Srodkowe kolko -->
+    <circle cx="0" cy="0" r="40" fill="#111" stroke="#FFD700" stroke-width="3"/>
+    <text x="0" y="5" text-anchor="middle" fill="#FFD700" font-size="16" font-weight="bold" font-family="Arial, sans-serif">HR</text>
+
+    <!-- Strzalka -->
+    <polygon points="0,-230 -12,-210 12,-210" fill="#fff" opacity="0.9"/>
+  </g>
+
+  <!-- Tytul -->
+  <text x="780" y="240" text-anchor="middle" fill="#ffffff" font-size="52" font-weight="bold" font-family="Arial, Helvetica, sans-serif">
+    Rekrutacyjne
+  </text>
+  <text x="780" y="310" text-anchor="middle" fill="#FFD700" font-size="56" font-weight="bold" font-family="Arial, Helvetica, sans-serif">
+    Koło Fortuny
+  </text>
+
+  <!-- Podtytul -->
+  <text x="780" y="380" text-anchor="middle" fill="#a0a0c0" font-size="22" font-family="Arial, Helvetica, sans-serif">
+    Paradoksy rekrutacyjne z życia wzięte
+  </text>
+
+  <!-- Dolna linia dekoracyjna -->
+  <rect x="650" y="420" width="260" height="2" fill="#8B5CF6" opacity="0.6" rx="1"/>
+
+  <!-- Autor -->
+  <text x="780" y="460" text-anchor="middle" fill="#707090" font-size="16" font-family="Arial, Helvetica, sans-serif">
+    by Krzysztof Brzezina
+  </text>
+</svg>

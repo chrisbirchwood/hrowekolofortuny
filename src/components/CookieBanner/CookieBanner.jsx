@@ -2,29 +2,53 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "../../i18n/context";
 import "./CookieBanner.css";
 
+const GA_MEASUREMENT_ID = "G-10T7E9FDG2";
+
+/**
+ * Ladowanie Google Analytics - tylko po wyrazeniu zgody.
+ * Tworzy skrypt gtag.js i konfiguruje z consent mode.
+ */
+function loadGoogleAnalytics() {
+  if (document.querySelector(`script[src*="googletagmanager.com/gtag"]`)) return;
+
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+  document.head.appendChild(script);
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { window.dataLayer.push(arguments); }
+  window.gtag = gtag;
+  gtag("js", new Date());
+  gtag("config", GA_MEASUREMENT_ID);
+}
+
 /**
  * Baner zgody na pliki cookie / localStorage.
  * Wyswietla sie przy pierwszej wizycie, zapisuje decyzje w localStorage.
+ * GA laduje sie TYLKO po wyrazeniu pelnej zgody.
  */
 export default function CookieBanner({ onNavigate }) {
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
 
+  // Sprawdzenie zgody przy pierwszym renderze
   useEffect(() => {
     try {
       const consent = localStorage.getItem("cookie-consent");
       if (!consent) {
         setIsVisible(true);
+      } else if (consent === "all") {
+        loadGoogleAnalytics();
       }
-    } catch {
-      // Brak dostepu do localStorage — nie pokazujemy banera
-    }
+    } catch {}
   }, []);
 
   const handleAccept = () => {
     try {
       localStorage.setItem("cookie-consent", "all");
     } catch {}
+    loadGoogleAnalytics();
     setIsVisible(false);
   };
 

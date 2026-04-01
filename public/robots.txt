@@ -1,0 +1,5 @@
+# Rekrutacyjne Kolo Fortuny - zasady dla robotow wyszukiwarek
+User-agent: *
+Allow: /
+
+Sitemap: https://hrowekolofortuny.birchcode.com/sitemap.xml

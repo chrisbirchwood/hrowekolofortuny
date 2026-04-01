@@ -1,0 +1,18 @@
+{
+  "name": "Rekrutacyjne Koło Fortuny",
+  "short_name": "Koło Fortuny",
+  "description": "Satyryczna gra przeglądarkowa o paradoksach rekrutacyjnych z życia wzięte. Zakręć kołem i sprawdź swoje szczęście!",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#1a1a2e",
+  "background_color": "#0a0a15",
+  "lang": "pl",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

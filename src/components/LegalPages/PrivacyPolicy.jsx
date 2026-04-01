@@ -30,11 +30,24 @@ export default function PrivacyPolicy({ onBack }) {
       </ul>
       <p>{t("legal.privacy.dataNoPersonal")}</p>
 
+      <h2>{t("legal.privacy.analyticsTitle")}</h2>
+      <p>{t("legal.privacy.analyticsText")}</p>
+      <ul>
+        <li>{t("legal.privacy.analyticsItem1")}</li>
+        <li>{t("legal.privacy.analyticsItem2")}</li>
+        <li>{t("legal.privacy.analyticsItem3")}</li>
+        <li>{t("legal.privacy.analyticsItem4")}</li>
+      </ul>
+      <p>{t("legal.privacy.analyticsText2")}</p>
+
       <h2>{t("legal.privacy.cookiesTitle")}</h2>
       <p>{t("legal.privacy.cookiesText")}</p>
 
       <h2>{t("legal.privacy.thirdPartyTitle")}</h2>
       <p>{t("legal.privacy.thirdPartyText")}</p>
+
+      <h2>{t("legal.privacy.recruitmentTitle")}</h2>
+      <p>{t("legal.privacy.recruitmentText")}</p>
 
       <h2>{t("legal.privacy.serverTitle")}</h2>
       <p>{t("legal.privacy.serverText")}</p>

@@ -115,6 +115,35 @@
   word-break: break-all;
 }
 
+/* Przycisk pobierania CV */
+.cv-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ffb703, #fb8500);
+  color: #1a1a2e;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(255, 183, 3, 0.3);
+}
+
+.cv-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 183, 3, 0.5);
+  background: linear-gradient(135deg, #ffc833, #ff9500);
+}
+
+.cv-button svg {
+  flex-shrink: 0;
+}
+
 @media (max-width: 900px) {
   .author-panel {
     width: 90%;

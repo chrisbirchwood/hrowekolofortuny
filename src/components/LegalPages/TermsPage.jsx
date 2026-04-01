@@ -34,6 +34,12 @@ export default function TermsPage({ onBack }) {
       <h2>{t("legal.terms.liabilityTitle")}</h2>
       <p>{t("legal.terms.liabilityText")}</p>
 
+      <h2>{t("legal.terms.recruitmentTitle")}</h2>
+      <p>{t("legal.terms.recruitmentText")}</p>
+
+      <h2>{t("legal.terms.cvTitle")}</h2>
+      <p>{t("legal.terms.cvText")}</p>
+
       <h2>{t("legal.terms.lawTitle")}</h2>
       <p>{t("legal.terms.lawText")}</p>
 

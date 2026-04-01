@@ -1,4 +1,5 @@
 export default {
+  pageTitle: "Rekrutacyjne Koło Fortuny - Paradoksy rekrutacyjne z życia wzięte",
   title: "Rekrutacyjne",
   titleLine2: "Koło Fortuny",
   subtitle: "Paradoksy rekrutacyjne z życia wzięte/zasłyszane",
@@ -18,6 +19,7 @@ export default {
     email: "Email",
     phone: "Telefon",
     github: "GitHub",
+    cv: "Pobierz CV",
     bio: "Tworzę aplikacje webowe i mobilne, zapewniam jakość oprogramowania oraz buduję agentów AI. Zapraszam do kontaktu!",
   },
   legal: {
@@ -58,10 +60,16 @@ export default {
       liabilityTitle: "5. Ograniczenie odpowiedzialności",
       liabilityText:
         "Autor nie ponosi odpowiedzialności za jakiekolwiek decyzje podjęte na podstawie wyników z Aplikacji, ani za interpretację prezentowanych treści humorystycznych. Aplikacja jest udostępniana \u201Etak jak jest\u201D (as-is), bez żadnych gwarancji.",
-      lawTitle: "6. Prawo właściwe",
+      recruitmentTitle: "6. Zgoda na wykorzystanie danych w celach rekrutacyjnych",
+      recruitmentText:
+        "Korzystając z Aplikacji i pobierając CV autora, użytkownik wyraża zgodę na przetwarzanie udostępnionych przez siebie danych (np. adres IP, informacje z Google Analytics) w celach rekrutacyjnych i kontaktowych. Dane te mogą być wykorzystane wyłącznie przez autora Aplikacji w celu nawiązania kontaktu zawodowego.",
+      cvTitle: "7. Pobieranie CV",
+      cvText:
+        "Aplikacja umożliwia pobranie CV autora. Kliknięcie przycisku pobierania jest rejestrowane w celach statystycznych (za pomocą Google Analytics). Pobrane CV może być wykorzystane wyłącznie w celach rekrutacyjnych i kontaktowych.",
+      lawTitle: "8. Prawo właściwe",
       lawText:
         "Niniejszy regulamin podlega prawu polskiemu. W sprawach nieuregulowanych zastosowanie mają odpowiednie przepisy prawa polskiego.",
-      contactTitle: "7. Kontakt",
+      contactTitle: "9. Kontakt",
       contactText:
         "Krzysztof Brzezina — chrisbirchwood.info@gmail.com",
     },
@@ -77,17 +85,29 @@ export default {
       dataItem1: "Wybrany język interfejsu (pl/en)",
       dataItem2: "Zgoda na localStorage (cookie-consent)",
       dataNoPersonal:
-        "Nie stosujemy żadnych plików cookie, narzędzi analitycznych, pikseli śledzących ani mechanizmów profilowania. Żadne dane nie są przesyłane na serwer.",
-      cookiesTitle: "3. Pliki cookie",
+        "Preferencje użytkownika (język, zgoda) są przechowywane wyłącznie w localStorage przeglądarki, dostępnym tylko na Twoim urządzeniu.",
+      analyticsTitle: "3. Google Analytics",
+      analyticsText:
+        "Aplikacja korzysta z Google Analytics 4 (GA4) w celu zbierania anonimowych danych statystycznych o korzystaniu z Aplikacji. Google Analytics zbiera m.in.:",
+      analyticsItem1: "Przybliżoną lokalizację (kraj, miasto)",
+      analyticsItem2: "Informacje o urządzeniu i przeglądarce",
+      analyticsItem3: "Czas spędzony na stronie i interakcje (np. kliknięcia, kręcenie kołem)",
+      analyticsItem4: "Źródło ruchu (skąd użytkownik trafił na stronę)",
+      analyticsText2:
+        "Google Analytics wykorzystuje pliki cookie. Dane są przetwarzane przez Google LLC zgodnie z ich polityką prywatności. Nie łączymy danych z GA z danymi pozwalającymi na identyfikację konkretnej osoby. Skrypt GA jest ładowany dopiero po wyrażeniu zgody w banerze cookie.",
+      cookiesTitle: "4. Pliki cookie",
       cookiesText:
-        "Aplikacja nie korzysta z plików cookie. Preferencje użytkownika są przechowywane wyłącznie w localStorage przeglądarki, które jest dostępne tylko na Twoim urządzeniu.",
-      thirdPartyTitle: "4. Usługi zewnętrzne",
+        "Aplikacja wykorzystuje pliki cookie wyłącznie w związku z Google Analytics (po wyrażeniu zgody). Preferencje użytkownika są przechowywane w localStorage przeglądarki.",
+      thirdPartyTitle: "5. Usługi zewnętrzne",
       thirdPartyText:
-        "Aplikacja umożliwia udostępnienie wyniku na LinkedIn. Kliknięcie przycisku otwiera zewnętrzną stronę LinkedIn — w tym przypadku zastosowanie ma polityka prywatności LinkedIn. Aplikacja nie przekazuje żadnych danych do LinkedIn automatycznie.",
-      serverTitle: "5. Przesyłanie danych na serwer",
+        "Aplikacja korzysta z następujących usług zewnętrznych: (1) Google Analytics 4 — analityka ruchu na stronie; (2) LinkedIn — udostępnianie wyników. Kliknięcie przycisku otwiera zewnętrzną stronę LinkedIn — zastosowanie ma polityka prywatności LinkedIn.",
+      recruitmentTitle: "6. Wykorzystanie danych w celach rekrutacyjnych",
+      recruitmentText:
+        "Korzystając z Aplikacji i pobierając CV autora, użytkownik wyraża zgodę na przetwarzanie anonimowych danych statystycznych (z Google Analytics) w celach rekrutacyjnych i kontaktowych przez autora Aplikacji. Pobranie CV jest rejestrowane w celach statystycznych.",
+      serverTitle: "7. Przesyłanie danych na serwer",
       serverText:
-        "Aplikacja działa w całości po stronie przeglądarki (client-side). Żadne dane nie są wysyłane na żaden serwer zewnętrzny.",
-      gdprTitle: "6. Twoje prawa (RODO)",
+        "Aplikacja działa po stronie przeglądarki (client-side). Dane statystyczne są przesyłane wyłącznie do Google Analytics. Żadne inne dane nie są wysyłane na serwer zewnętrzny.",
+      gdprTitle: "8. Twoje prawa (RODO)",
       gdprText:
         "Mimo że nie zbieramy danych osobowych, informujemy o przysługujących Ci prawach wynikających z RODO:",
       gdprRight1: "Prawo dostępu do swoich danych",
@@ -95,7 +115,7 @@ export default {
       gdprRight3: "Prawo do usunięcia danych (prawo do bycia zapomnianym)",
       gdprRight4: "Prawo do ograniczenia przetwarzania",
       gdprRight5: "Prawo do wniesienia skargi do organu nadzorczego (UODO)",
-      contactTitle: "7. Kontakt",
+      contactTitle: "9. Kontakt",
       contactText:
         "W razie pytań dotyczących prywatności skontaktuj się z nami: Krzysztof Brzezina — chrisbirchwood.info@gmail.com",
     },

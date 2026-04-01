@@ -35,6 +35,11 @@ export default function App() {
   const { launch: launchConfetti } = useConfetti(confettiRef);
   const { t } = useTranslation();
 
+  // Dynamiczna aktualizacja tytulu strony przy zmianie jezyka
+  useEffect(() => {
+    document.title = t("pageTitle");
+  }, [t]);
+
   // Czyszczenie timeoutu modala przy odmontowaniu komponentu
   useEffect(() => {
     return () => {

@@ -1,4 +1,5 @@
 export default {
+  pageTitle: "Recruitment Wheel of Fortune - Recruitment paradoxes based on real life",
   title: "Recruitment",
   titleLine2: "Wheel of Fortune",
   subtitle: "Recruitment paradoxes based on real life",
@@ -18,6 +19,7 @@ export default {
     email: "Email",
     phone: "Phone",
     github: "GitHub",
+    cv: "Download CV",
     bio: "I build web & mobile apps, ensure software quality, and create AI agents. Let's get in touch!",
   },
   legal: {
@@ -58,10 +60,16 @@ export default {
       liabilityTitle: "5. Limitation of liability",
       liabilityText:
         "The author bears no responsibility for any decisions made based on the App's results, nor for the interpretation of the humorous content presented. The App is provided \"as-is\" without any warranties.",
-      lawTitle: "6. Governing law",
+      recruitmentTitle: "6. Consent to use data for recruitment purposes",
+      recruitmentText:
+        "By using the App and downloading the author's CV, you consent to the processing of your data (e.g., IP address, Google Analytics information) for recruitment and contact purposes. This data may only be used by the author of the App for professional networking.",
+      cvTitle: "7. CV download",
+      cvText:
+        "The App allows downloading the author's CV. Clicking the download button is logged for statistical purposes (via Google Analytics). The downloaded CV may only be used for recruitment and contact purposes.",
+      lawTitle: "8. Governing law",
       lawText:
         "These terms are governed by Polish law. Any matters not covered herein shall be subject to the applicable provisions of Polish law.",
-      contactTitle: "7. Contact",
+      contactTitle: "9. Contact",
       contactText:
         "Krzysztof Brzezina — chrisbirchwood.info@gmail.com",
     },
@@ -77,17 +85,29 @@ export default {
       dataItem1: "Selected interface language (pl/en)",
       dataItem2: "localStorage consent preference (cookie-consent)",
       dataNoPersonal:
-        "We do not use any cookies, analytics tools, tracking pixels, or profiling mechanisms. No data is sent to any server.",
-      cookiesTitle: "3. Cookies",
+        "User preferences (language, consent) are stored exclusively in the browser's localStorage, accessible only on your device.",
+      analyticsTitle: "3. Google Analytics",
+      analyticsText:
+        "The App uses Google Analytics 4 (GA4) to collect anonymous usage statistics. Google Analytics collects, among others:",
+      analyticsItem1: "Approximate location (country, city)",
+      analyticsItem2: "Device and browser information",
+      analyticsItem3: "Time spent on the page and interactions (e.g., clicks, spinning the wheel)",
+      analyticsItem4: "Traffic source (where the user came from)",
+      analyticsText2:
+        "Google Analytics uses cookies. Data is processed by Google LLC in accordance with their privacy policy. We do not combine GA data with personally identifiable information. The GA script is loaded only after consent is given via the cookie banner.",
+      cookiesTitle: "4. Cookies",
       cookiesText:
-        "The App does not use cookies. User preferences are stored exclusively in the browser's localStorage, which is accessible only on your device.",
-      thirdPartyTitle: "4. Third-party services",
+        "The App uses cookies only in connection with Google Analytics (after consent is given). User preferences are stored in the browser's localStorage.",
+      thirdPartyTitle: "5. Third-party services",
       thirdPartyText:
-        "The App allows sharing results on LinkedIn. Clicking the share button opens an external LinkedIn page — LinkedIn's own privacy policy applies in that case. The App does not transmit any data to LinkedIn automatically.",
-      serverTitle: "5. Data transmission",
+        "The App uses the following third-party services: (1) Google Analytics 4 — traffic analytics; (2) LinkedIn — sharing results. Clicking the share button opens an external LinkedIn page — LinkedIn's own privacy policy applies.",
+      recruitmentTitle: "6. Use of data for recruitment purposes",
+      recruitmentText:
+        "By using the App and downloading the author's CV, you consent to the processing of anonymous statistical data (from Google Analytics) for recruitment and contact purposes by the author. CV downloads are logged for statistical purposes.",
+      serverTitle: "7. Data transmission",
       serverText:
-        "The App runs entirely in the browser (client-side). No data is sent to any external server.",
-      gdprTitle: "6. Your rights (GDPR)",
+        "The App runs in the browser (client-side). Statistical data is sent only to Google Analytics. No other data is sent to any external server.",
+      gdprTitle: "8. Your rights (GDPR)",
       gdprText:
         "Although we do not collect personal data, we inform you of your rights under GDPR:",
       gdprRight1: "Right of access to your data",
@@ -95,7 +115,7 @@ export default {
       gdprRight3: "Right to erasure (right to be forgotten)",
       gdprRight4: "Right to restriction of processing",
       gdprRight5: "Right to lodge a complaint with a supervisory authority",
-      contactTitle: "7. Contact",
+      contactTitle: "9. Contact",
       contactText:
         "For any privacy-related questions, contact us: Krzysztof Brzezina — chrisbirchwood.info@gmail.com",
     },
