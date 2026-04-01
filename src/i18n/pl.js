@@ -8,7 +8,7 @@ export default {
   modalTitle: "Wynik losowania",
   modalTitleWinner: "BRAWO!",
   closeButton: "Zamknij",
-  shareLinkedIn: "Udostępnij na LinkedIn",
+  shareLinkedIn: "Udostępnij",
   shareTemplate:
     '🎡 Zakręciłem Rekrutacyjnym Kołem Fortuny i wylosowałem:\n\n"{result}"\n\nParadoksy rekrutacyjne z życia wzięte - sprawdź swoje szczęście! 😄\nhttps://hrowekolofortuny.birchcode.com\n\n#HR #Rekrutacja #KołoFortuny #HRHumor',
   author: {

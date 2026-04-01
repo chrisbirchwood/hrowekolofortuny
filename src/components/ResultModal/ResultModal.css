@@ -96,6 +96,7 @@
   padding: 14px 30px;
   font-size: 16px;
   font-weight: 700;
+  font-family: inherit;
   color: #fff;
   background: #0a66c2;
   border: none;
@@ -106,7 +107,6 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  text-decoration: none;
 }
 
 .linkedin-share:hover {

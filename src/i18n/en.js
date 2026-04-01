@@ -8,7 +8,7 @@ export default {
   modalTitle: "Your result",
   modalTitleWinner: "CONGRATS!",
   closeButton: "Close",
-  shareLinkedIn: "Share on LinkedIn",
+  shareLinkedIn: "Share",
   shareTemplate:
     '🎡 I spun the Recruitment Wheel of Fortune and got:\n\n"{result}"\n\nRecruitment paradoxes based on real life - try your luck! 😄\nhttps://hrowekolofortuny.birchcode.com\n\n#HR #Recruitment #WheelOfFortune #HRHumor',
   author: {
